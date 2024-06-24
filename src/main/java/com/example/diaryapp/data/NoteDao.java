@@ -24,6 +24,12 @@ public interface NoteDao {
     @Query("SELECT * FROM Note WHERE id = :id LIMIT 1")
     Note findById(int id);
 
+    @Query("SELECT * FROM Note WHERE text LIKE '%' || :keyword || '%' OR title LIKE '%' || :keyword || '%'")
+    LiveData<List<Note>> searchNotesByKeyword(String keyword);
+
+    @Query("SELECT * FROM Note WHERE timestamp = :fromTimestamp")
+    LiveData<List<Note>> filterNotesByTimestamp(long fromTimestamp);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
 
